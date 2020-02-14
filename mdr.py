@@ -5,7 +5,7 @@ import time
 import threading
 import os
 
-TOKEN = 'NjE5OTcwMTQ2Mzc0NTE2NzU2.XkYJFg.jkAuNJKcfEkVXq48QRAQF3-tkUI' # Client token goes here; this has been removed from the repo for security reasons.
+TOKEN = '' # Client token goes here; this has been removed from the repo for security reasons.
 
 client = discord.Client()
 
