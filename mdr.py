@@ -5,7 +5,7 @@ import time
 import threading
 import os
 
-TOKEN = '' # Client token goes here; this has been removed from the repo for security reasons.
+TOKEN = 'NjE5OTcwMTQ2Mzc0NTE2NzU2.XkYJFg.jkAuNJKcfEkVXq48QRAQF3-tkUI' # Client token goes here; this has been removed from the repo for security reasons.
 
 client = discord.Client()
 
@@ -28,9 +28,13 @@ async def on_message(message):
 		
 	elif message.content.startswith(">--begin"):
 		numMurderers = 1
+		houseType = 1
 		
 		if len(message.content.split(" ")) > 1:
 			numMurderers = int(message.content.split(" ")[1])
+			
+		if len(message.content.split(" ")) == 3:
+			houseType = int(message.content.split(" ")[2])
 			
 		# Get everyone currently in the voice channel of the person running the command
 		voice_state = message.author.voice
@@ -46,7 +50,7 @@ async def on_message(message):
 		mc = await message.guild.create_category_channel("Discord Murder")
 		
 		# Creates the house (essentially a room layout)
-		mh = House("Murder House")
+		mh = House("Murder House", houseType)
 		house = mh
 		
 		# Keep @everyone from seeing the rooms and per-player text channels
@@ -803,33 +807,72 @@ class Room:
 		
 		
 class House:
-	def __init__(self, name):
+	def __init__(self, name, number):
 		self.name = name
 		
 		# Construct a house from rooms (temporary hard-code)
-		foyer = Room("Foyer")
-		diningRoom = Room("Dining Room")
-		livingRoom = Room("Living Room")
-		recRoom = Room("Rec Room")
-		northwestHall = Room("Northwest Hall")
-		northeastHall = Room("Northeast Hall")
-		
-		foyerNeighbors = [diningRoom, None, livingRoom, recRoom, None, None]
-		diningRoomNeighbors = [None, foyer, northwestHall, northeastHall, None, None]
-		livingRoomNeighbors = [northwestHall, None, None, foyer, None, None]
-		recRoomNeighbors = [northeastHall, None, foyer, None, None, None]
-		northwestHallNeighbors = [None, livingRoom, None, diningRoom, None, None]
-		northeastHallNeighbors = [None, recRoom, diningRoom, None, None, None]
-		
-		foyer.setNeighbors(foyerNeighbors)
-		diningRoom.setNeighbors(diningRoomNeighbors)
-		livingRoom.setNeighbors(livingRoomNeighbors)
-		recRoom.setNeighbors(recRoomNeighbors)
-		northwestHall.setNeighbors(northwestHallNeighbors)
-		northeastHall.setNeighbors(northeastHallNeighbors)
-		
-		self.rooms = [foyer, diningRoom, livingRoom, recRoom, northwestHall, northeastHall]
-		
+		if number == 1:
+			foyer = Room("Foyer")
+			diningRoom = Room("Dining Room")
+			livingRoom = Room("Living Room")
+			recRoom = Room("Rec Room")
+			northwestHall = Room("Northwest Hall")
+			northeastHall = Room("Northeast Hall")
+			
+			foyerNeighbors = [diningRoom, None, livingRoom, recRoom, None, None]
+			diningRoomNeighbors = [None, foyer, northwestHall, northeastHall, None, None]
+			livingRoomNeighbors = [northwestHall, None, None, foyer, None, None]
+			recRoomNeighbors = [northeastHall, None, foyer, None, None, None]
+			northwestHallNeighbors = [None, livingRoom, None, diningRoom, None, None]
+			northeastHallNeighbors = [None, recRoom, diningRoom, None, None, None]
+			
+			foyer.setNeighbors(foyerNeighbors)
+			diningRoom.setNeighbors(diningRoomNeighbors)
+			livingRoom.setNeighbors(livingRoomNeighbors)
+			recRoom.setNeighbors(recRoomNeighbors)
+			northwestHall.setNeighbors(northwestHallNeighbors)
+			northeastHall.setNeighbors(northeastHallNeighbors)
+			
+			self.rooms = [foyer, diningRoom, livingRoom, recRoom, northwestHall, northeastHall]
+			
+		elif number == 2:
+			foyer = Room("Foyer")
+			diningRoom = Room("Dining Room")
+			livingRoom = Room("Living Room")
+			recRoom = Room("Rec Room")
+			northwestHall = Room("Northwest Hall")
+			northeastHall = Room("Northeast Hall")
+			upstairsHall = Room("Upstairs Hall")
+			masterBedroom = Room("Master Bedroom")
+			balcony = Room("Balcony")
+			homeOffice = Room("Home Office")
+			guestBedroom = Room("Guest Bedroom")
+			
+			foyerNeighbors = [diningRoom, None, livingRoom, recRoom, None, None]
+			diningRoomNeighbors = [None, foyer, northwestHall, northeastHall, None, None]
+			livingRoomNeighbors = [northwestHall, None, None, foyer, None, None]
+			recRoomNeighbors = [northeastHall, None, foyer, None, None, None]
+			northwestHallNeighbors = [None, livingRoom, None, diningRoom, None, None]
+			northeastHallNeighbors = [None, recRoom, diningRoom, None, upstairsHall, None]
+			upstairsHallNeighbors = [None, guestBedroom, masterBedroom, None, None, northeastHall]
+			masterBedroomNeighbors = [None, balcony, homeOffice, upstairsHall, None, None]
+			balconyNeighbors = [masterBedroom, None, None, None, None, None]
+			homeOfficeNeighbors = [None, None, None, masterBedroom, None, None]
+			guestBedroomNeighbors = [upstairsHall, None, None, None, None, None]
+			
+			foyer.setNeighbors(foyerNeighbors)
+			diningRoom.setNeighbors(diningRoomNeighbors)
+			livingRoom.setNeighbors(livingRoomNeighbors)
+			recRoom.setNeighbors(recRoomNeighbors)
+			northwestHall.setNeighbors(northwestHallNeighbors)
+			northeastHall.setNeighbors(northeastHallNeighbors)
+			upstairsHall.setNeighbors(upstairsHallNeighbors)
+			masterBedroom.setNeighbors(masterBedroomNeighbors)
+			balcony.setNeighbors(balconyNeighbors)
+			homeOffice.setNeighbors(homeOfficeNeighbors)
+			guestBedroom.setNeighbors(guestBedroomNeighbors)
+			
+			self.rooms = [foyer, diningRoom, livingRoom, recRoom, northwestHall, northeastHall, upstairsHall, masterBedroom, balcony, homeOffice, guestBedroom]
 		
 
 client.run(TOKEN)
