@@ -494,6 +494,10 @@ async def on_message(message):
 		isRunning = False
 		house = None
 		originalVoice = None
+		
+	elif message.content.startswith(">--test"):
+		m = await message.channel.send("Hi")
+		await m.add_reaction("Stonks")
 			
 	return
 			
@@ -618,7 +622,7 @@ async def addNavReactions(message, room):
 		await message.add_reaction("\u2934") 
 		
 	if room.neighbors[5] is not None:
-		await message.add_reaction("️\u2935")
+		await message.add_reaction("\u2935")
 		
 	return
 		
